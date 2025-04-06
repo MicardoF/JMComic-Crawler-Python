@@ -38,5 +38,5 @@ plugins:
   after_album:
     - plugin: img2pdf
       kwargs:
-        pdf_dir: D:/pdf/ # pdf存放文件夹
+        pdf_dir: ${JM_DOWNLOAD_DIR} # pdf存放文件夹
         filename_rule: Aname
