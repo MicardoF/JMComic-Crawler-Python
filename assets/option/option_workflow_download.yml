@@ -35,8 +35,8 @@ plugins:
         title: ${EMAIL_TITLE}
         content: ${EMAIL_CONTENT}
         
-   after_album:
- - plugin: img2pdf
+  after_album:
+    - plugin: img2pdf
       kwargs:
         pdf_dir: D:/pdf/ # pdf存放文件夹
         filename_rule: Aname
