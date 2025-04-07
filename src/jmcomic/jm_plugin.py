@@ -747,7 +747,10 @@ class Img2pdfPlugin(JmOptionPlugin):
                downloader=None,
                pdf_dir=None,
                filename_rule='Pid',
-               delete_original_file=True,
+               delete_original_file=False,
+               quality=85,
+               compression='deflate',
+               colorspace='RGB',
                **kwargs,
                ):
         if photo is None and album is None:
@@ -771,14 +774,14 @@ class Img2pdfPlugin(JmOptionPlugin):
         pdf_filepath = os.path.join(pdf_dir, f'{filename}.pdf')
 
         # 调用 img2pdf 把 photo_dir 下的所有图片转为pdf
-        img_path_ls, img_dir_ls = self.write_img_2_pdf(pdf_filepath, album, photo)
+        img_path_ls, img_dir_ls = self.write_img_2_pdf(pdf_filepath, album, photo, quality, compression, colorspace)
         self.log(f'Convert Successfully: JM{album or photo} → {pdf_filepath}')
 
         # 执行删除
         img_path_ls += img_dir_ls
         self.execute_deletion(img_path_ls)
 
-    def write_img_2_pdf(self, pdf_filepath, album: JmAlbumDetail, photo: JmPhotoDetail):
+    def write_img_2_pdf(self, pdf_filepath, album: JmAlbumDetail, photo: JmPhotoDetail, quality, compression, colorspace):
         import img2pdf
 
         if album is None:
@@ -794,8 +797,21 @@ class Img2pdfPlugin(JmOptionPlugin):
                 continue
             img_path_ls += imgs
 
+        # 设置压缩参数
+        layout_fun = img2pdf.get_layout_fun(
+            pagesize=None,  # 自动适应图片大小
+            border=0,  # 无边框
+            fit='into',  # 保持原比例
+        )
+
         with open(pdf_filepath, 'wb') as f:
-            f.write(img2pdf.convert(img_path_ls))
+            f.write(img2pdf.convert(
+                img_path_ls,
+                layout_fun=layout_fun,
+                quality=quality,
+                compression=compression,
+                colorspace=colorspace,
+            ))
 
         return img_path_ls, img_dir_ls
 
