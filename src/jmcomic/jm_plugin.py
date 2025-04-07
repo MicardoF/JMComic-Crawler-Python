@@ -747,7 +747,7 @@ class Img2pdfPlugin(JmOptionPlugin):
                downloader=None,
                pdf_dir=None,
                filename_rule='Pid',
-               delete_original_file=False,
+               delete_original_file=True,
                **kwargs,
                ):
         if photo is None and album is None:
