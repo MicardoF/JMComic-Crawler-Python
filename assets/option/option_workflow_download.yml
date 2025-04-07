@@ -40,3 +40,4 @@ plugins:
       kwargs:
         pdf_dir: ${JM_DOWNLOAD_DIR} # pdf存放文件夹
         filename_rule: Aname
+        delete_original_file: True
